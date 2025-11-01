@@ -1,0 +1,56 @@
+[
+  {
+    "email": "yuvakiran@57302.com",
+    "password": "dealwallet",
+    "expected": "success",
+    "scenario": "Valid Login"
+  },
+  {
+    "email": "validuser@gmail.com",
+    "password": "WrongPass@123",
+    "expected": "error",
+    "scenario": "Invalid Password"
+  },
+  {
+    "email": "wronguser@gmail.com",
+    "password": "ValidPass@123",
+    "expected": "error",
+    "scenario": "Invalid Email"
+  },
+  {
+    "email": "",
+    "password": "",
+    "expected": "error",
+    "scenario": "Empty Fields"
+  },
+  {
+    "email": "   ",
+    "password": "   ",
+    "expected": "error",
+    "scenario": "Whitespace Fields"
+  },
+  {
+    "email": "usergmail.com",
+    "password": "dealwallet",
+    "expected": "error",
+    "scenario": "Invalid Email Format"
+  },
+  {
+    "email": "VALIDUSER@GMAIL.COM",
+    "password": "ValidPass@123",
+    "expected": "error",
+    "scenario": "Case Sensitivity Check"
+  },
+  {
+    "email": " validuser@gmail.com ",
+    "password": "ValidPass@123",
+    "expected": "error",
+    "scenario": "Extra Spaces Around Email"
+  },
+  {
+    "email": "user!@gmail.com",
+    "password": "ValidPass@123",
+    "expected": "error",
+    "scenario": "Special Characters in Email"
+  }
+]
