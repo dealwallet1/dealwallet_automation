@@ -1,0 +1,13 @@
+#to install dependencies
+pip install -r requirements.txt
+
+python -m venv venv
+.\venv\Scripts\activate
+
+
+pytest -s -v
+
+pytest -v --html=reports/report.html --self-contained-html
+
+pytest -v tests/test_login_page.py --html=reports/login_report.html --self-contained-html
+
