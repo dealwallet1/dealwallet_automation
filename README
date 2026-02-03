@@ -11,3 +11,7 @@ pytest -v --html=reports/report.html --self-contained-html
 
 pytest -v tests/test_login_page.py --html=reports/login_report.html --self-contained-html
 
+pytest -m home -v --html=report_home.html
+
+
+ 
