@@ -111,27 +111,27 @@ class TestHomePage:
 
         self.home.safe_click(self.home.SIGNIN_BUTTON)
         assert any(k in self.home.page.url.lower() for k in ["signin", "login"]), \
-            "❌ Sign-in did not navigate"
+            "Sign-in did not navigate"
 
     # ------------------------------
     # HERO BANNER
     # ------------------------------
     def test_banner_section_visible(self):
-        assert self.home.verify_banner_visible(), "❌ Hero banner not visible"
+        assert self.home.verify_banner_visible(), "Hero banner not visible"
 
     # ------------------------------
     # FEATURE CARDS
     # ------------------------------
     def test_feature_cards_present(self):
         count = self.home.get_feature_card_count()
-        assert count >= 4, f"❌ Expected at least 4 feature cards, found {count}"
+        assert count >= 4, f"Expected at least 4 feature cards, found {count}"
 
     # ------------------------------
     # SEARCH BAR PRESENCE
     # ------------------------------
     def test_search_field_present(self):
         visible = self.home.is_visible(self.home.SEARCH_INPUT, timeout=7000)
-        assert visible, "❌ Search bar not visible on homepage"
+        assert visible, "Search bar not visible on homepage"
 
     # ------------------------------
     # SEARCH FUNCTIONALITY
@@ -141,17 +141,17 @@ class TestHomePage:
             pytest.skip("Search input not available")
 
         ok = self.home.perform_search("shoes")
-        assert ok, "❌ Search could not be performed"
+        assert ok, "Search could not be performed"
 
         assert any(k in self.home.page.url.lower() for k in ["search", "product", "products"]), \
-            "❌ Search results page not detected after search"
+            "Search results page not detected after search"
 
     # ------------------------------
     # FOOTER
     # ------------------------------
     def test_footer_visible(self):
         self.home.scroll_to_bottom()
-        assert self.home.verify_footer_visible(), "❌ Footer is not visible"
+        assert self.home.verify_footer_visible(), "Footer is not visible"
 
     # ------------------------------
     # SOCIAL LINKS
@@ -159,7 +159,7 @@ class TestHomePage:
     def test_social_media_links(self):
         self.home.scroll_to_bottom()
         links = self.home.verify_social_links()
-        assert len(links) > 0, "❌ Footer social icons missing"
+        assert len(links) > 0, "Footer social icons missing"
 
     # ------------------------------
     # PERFORMANCE
@@ -169,4 +169,4 @@ class TestHomePage:
         start = time.time()
         self.home.navigate()
         load_time = round(time.time() - start, 2)
-        assert load_time < 12, f"❌ Homepage load slow: {load_time}s"
+        assert load_time < 12, f"Homepage load slow: {load_time}s"
