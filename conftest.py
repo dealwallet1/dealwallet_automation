@@ -19,3 +19,23 @@ def page():
         page.close()
         context.close()
         browser.close()
+
+def pytest_html_report_title(report):
+    # Default title if no specific marker used
+    title = "DealWallet Automation Test Report"
+
+    try:
+        config = report.config
+        markexpr = getattr(config.option, "markexpr", None)
+        if markexpr:
+            if "login" in markexpr:
+                title = "DealWallet Login Page Test Report"
+            elif "home" in markexpr:
+                title = "DealWallet Home Page Test Report"
+    except Exception:
+        pass
+
+    report.title = title
+
+
+
