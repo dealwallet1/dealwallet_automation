@@ -1,19 +1,19 @@
 [
   {
-    "email": "yuvakiran@57302.com",
-    "password": "dealwallet",
+    "email": "pradeep1@gmail.com",
+    "password": "Pradeep@0405",
     "expected": "success",
     "scenario": "Valid Login"
   },
   {
-    "email": "yuvakiran@57302.com",
-    "password": "WrongPass@123",
+    "email": "pradeep1@gmail.com",
+    "password": "Pradeep@0405",
     "expected": "error",
     "scenario": "Invalid Password"
   },
   {
     "email": "wronguser@gmail.com",
-    "password": "dealwallet",
+    "password": "Pradeep@0405",
     "expected": "error",
     "scenario": "Invalid Email"
   },
@@ -31,7 +31,7 @@
   },
   {
     "email": "usergmail.com",
-    "password": "dealwallet",
+    "password": "Pradeep@0405",
     "expected": "error",
     "scenario": "Invalid Email Format"
   },
@@ -42,8 +42,8 @@
     "scenario": "Case Sensitivity Check"
   },
   {
-    "email": " yuvakiran@57302.com ",
-    "password": "dealwallet",
+    "email": " pradeep1@gmail.com ",
+    "password": "Pradeep@0405",
     "expected": "error",
     "scenario": "Extra Spaces Around Email"
   },
