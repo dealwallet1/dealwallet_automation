@@ -7,14 +7,12 @@ class CouponsPage(BasePage):
 
         self.url = f"{self.base_url}/coupons"
 
-       
         self.CARD = "button:has-text('View Deal'), button:has-text('Get Coupon')"
 
-       
         self.FILTER_CONTAINER = "div.flex.gap-2.pb-1"
         self.FILTER_BUTTONS = f"{self.FILTER_CONTAINER} button:visible"
 
-   
+
     def navigate(self):
         self.page.goto(
             self.url,
@@ -24,10 +22,8 @@ class CouponsPage(BasePage):
         self.handle_cookie_popup()
         self.wait_for_page_ready()
 
-       
         self.scroll_full_page()
 
- 
     def verify_page_loaded(self):
         return "coupons" in self.page.url.lower()
 
@@ -43,7 +39,6 @@ class CouponsPage(BasePage):
 
         return self.page.locator(self.CARD).count()
 
-   
 
     def get_all_filters(self):
         self.handle_cookie_popup()
@@ -57,7 +52,6 @@ class CouponsPage(BasePage):
         for i in range(count):
             text = filters.nth(i).inner_text().strip()
 
-            
             if text and not any(x in text for x in ["Quick", "Legal", "Sync", "+"]):
                 names.append(text)
                 valid_indexes.append(i)
@@ -71,21 +65,17 @@ class CouponsPage(BasePage):
         try:
             btn = filters.nth(index)
 
-          
-            btn.wait_for(state="visible", timeout=5000)
+            btn.wait_for(state="visible", timeout=5000)  
             btn.scroll_into_view_if_needed()
-
             btn.click(force=True)
 
-            
-            self.page.wait_for_timeout(1000)
+            self.page.wait_for_timeout(800)
             return True
 
         except Exception as e:
             print(f" Failed to open filter {index}: {e}")
             return False
 
-   
 
     def verify_dropdown_opened(self):
         try:
@@ -94,13 +84,9 @@ class CouponsPage(BasePage):
                 "div[role='listbox']:visible, "
                 "div.absolute:visible"
             )
-
-            return dropdown.count() > 0 and dropdown.first.is_visible()
-
+            return dropdown.count() > 0
         except:
             return False
-
- 
 
     def get_sort_options(self):
         try:
@@ -128,22 +114,59 @@ class CouponsPage(BasePage):
         options = self.get_sort_options()
         return len(options) > 1
 
-    
-
     def close_dropdown(self):
         try:
-            # Try ESC first
             self.page.keyboard.press("Escape")
             self.page.wait_for_timeout(500)
 
-            # Fallback: click outside
             self.page.mouse.click(10, 10)
             self.page.wait_for_timeout(500)
 
         except:
             pass
 
-  
+
+    def click_first_share_icon(self):
+        try:
+
+            first_card = self.page.locator(".group:visible").first
+
+            share_btn = first_card.locator(
+                "button:has(svg.lucide-share-2)"
+            )
+
+            share_btn.wait_for(state="visible", timeout=5000)
+            share_btn.scroll_into_view_if_needed()
+
+            share_btn.click(force=True)
+
+            self.page.wait_for_timeout(1500)
+
+            print(" Share icon clicked")
+            return True
+
+        except Exception as e:
+            print(f" Share click failed: {e}")
+            return False
+
+    def verify_share_popup_opened(self):
+        try:
+   
+            popup = self.page.locator(
+                "div:visible:has(h3:has-text('Share this coupon'))"
+            ).first
+
+            popup.wait_for(state="visible", timeout=5000)
+
+            print(" Share popup visible")
+            return True
+
+        except Exception as e:
+            print(f" Share popup validation failed: {e}")
+            return False
+
+ 
+
     def scroll_full_page(self):
         print(" Scrolling Coupons page...")
 
