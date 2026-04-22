@@ -2,6 +2,7 @@ import pytest
 from pages.deals_page import DealsPage
 from playwright.sync_api import Page
 
+
 @pytest.mark.deals
 class TestDealsPage:
 
@@ -10,56 +11,65 @@ class TestDealsPage:
         self.deals = DealsPage(page)
         self.deals.navigate()
 
-   
     def test_page_load(self):
         assert self.deals.verify_page_loaded()
 
-   
     def test_deal_cards_present(self):
         count = self.deals.get_deals_count()
         assert count > 0, f"No deals found, count={count}"
 
+    def test_filters_and_scroll(self):
+        
+        self.deals.page.wait_for_load_state("networkidle")
 
-    def test_filters_functionality(self):
         filters, count = self.deals.get_all_filters()
-
-        assert count > 0, "No filters found on Deals page"
+        assert count > 0, "No filters found"
 
         for i in range(count):
-            filter_text = filters.nth(i).inner_text().strip()
+            text = filters.nth(i).inner_text().strip()
+            print(f"Testing filter: {text}")
 
-            print(f" Testing filter: {filter_text}")
+            assert self.deals.open_filter_by_index(i)
 
-            
-            assert self.deals.open_filter_by_index(i), \
-                f"Failed to open filter {filter_text}"
+            if "Sort By" in text:
+                assert self.deals.verify_sort_dropdown_opened()
+            else:
+                assert self.deals.verify_dropdown_opened()
 
-            
-            if "Sort By" in filter_text:
-                assert self.deals.verify_sort_dropdown_opened(), \
-                    "Sort dropdown not visible"
-
-                print(" Sort By dropdown opened")
-                self.deals.close_dropdown()
-                continue
-
-            
-            assert self.deals.verify_dropdown_opened(), \
-                f"Dropdown not visible for {filter_text}"
-
-            print(f" Dropdown opened for: {filter_text}")
             self.deals.close_dropdown()
 
-        
         before = self.deals.get_deals_count()
-
         self.deals.scroll_page_full()
-
         after = self.deals.get_deals_count()
 
-        print(f" Deals before scroll: {before}, after scroll: {after}")
+        print(f"Before: {before}, After: {after}")
+        assert after >= before
 
-        assert after >= before, "Deals did not load on scroll"
-
-        
         self.deals.scroll_to_top()
+
+    def test_buy_now_navigation(self):
+        assert self.deals.click_first_buy_now(), \
+            "Buy Now click failed"
+
+        self.deals.page.wait_for_load_state("domcontentloaded")
+
+        assert self.deals.verify_redirect_to_deal_page(), \
+            "Redirection failed"
+
+    def test_share_popup(self):
+        # Step 1: Go to deal page
+        assert self.deals.click_first_buy_now(), \
+            "Buy Now click failed"
+
+        self.deals.page.wait_for_load_state("domcontentloaded")
+
+        assert self.deals.verify_redirect_to_deal_page(), \
+            "Redirection failed"
+
+        assert self.deals.click_share_icon(), \
+            "Share icon click failed"
+
+        assert self.deals.verify_share_popup_opened(), \
+            "Share popup not visible"
+
+    
