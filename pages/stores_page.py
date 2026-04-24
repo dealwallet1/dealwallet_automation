@@ -165,9 +165,7 @@ class StoresPage(BasePage):
             print(f"Store click failed: {e}")
             return False
 
-    # ------------------------------
-    # VERIFY LANDING
-    # ------------------------------
+  
     def verify_store_landing_page(self):
         try:
             url = self.page.url.lower()
@@ -177,9 +175,7 @@ class StoresPage(BasePage):
         except:
             return False
 
-    # ------------------------------
-    # GET STORE NAME
-    # ------------------------------
+
     def get_store_name(self):
         try:
             heading = self.page.locator(self.STORE_NAME).first
