@@ -5,27 +5,24 @@ class StoresPage(BasePage):
     def __init__(self, page):
         super().__init__(page)
 
-        # URL
         self.url = f"{self.base_url}/stores"
 
-        # For count validation (NOT for clicking)
+        
         self.CARD = "a[href*='store']"
 
-        # Filters
+        
         self.FILTER_BUTTONS = "button:has(span.whitespace-nowrap)"
 
-        # ✅ Stable Store UI card
+        
         self.STORE_UI_CARD = "div.group.relative.rounded-2xl.cursor-pointer"
 
-        # ✅ Store name (strict mode fix)
+    
         self.STORE_NAME = "h1.text-xl, h1"
 
-        # ✅ NEW: Store Tabs (Deals / Coupons / About)
+        
         self.STORE_TABS = "div.flex.rounded-full.border button"
 
-    # ------------------------------
-    # NAVIGATION
-    # ------------------------------
+    
     def navigate(self):
         self.page.goto(self.url, timeout=60000, wait_until="domcontentloaded")
         self.handle_cookie_popup()
@@ -34,9 +31,7 @@ class StoresPage(BasePage):
     def verify_page_loaded(self):
         return "stores" in self.page.url.lower()
 
-    # ------------------------------
-    # STORE COUNT
-    # ------------------------------
+   
     def get_store_count(self):
         self.handle_cookie_popup()
 
@@ -50,9 +45,7 @@ class StoresPage(BasePage):
         print(f"Total stores: {count}")
         return count
 
-    # ------------------------------
-    # SEARCH STORE
-    # ------------------------------
+   
     def search_store(self, store_name):
         self.handle_cookie_popup()
 
@@ -71,9 +64,7 @@ class StoresPage(BasePage):
         results = self.page.locator(self.CARD).count()
         return results > 0
 
-    # ------------------------------
-    # FILTERS
-    # ------------------------------
+  
     def get_all_filters(self):
         self.handle_cookie_popup()
 
@@ -133,9 +124,7 @@ class StoresPage(BasePage):
         except:
             pass
 
-    # ------------------------------
-    # SCROLL
-    # ------------------------------
+
     def scroll_full_page(self):
         print("Scrolling Stores page...")
 
@@ -156,9 +145,7 @@ class StoresPage(BasePage):
         self.page.evaluate("window.scrollTo(0, 0)")
         self.page.wait_for_timeout(500)
 
-    # ------------------------------
-    # CLICK STORE
-    # ------------------------------
+  
     def click_first_store(self):
         try:
             self.page.wait_for_selector(self.STORE_UI_CARD, timeout=10000)
@@ -207,9 +194,7 @@ class StoresPage(BasePage):
             print(f"Failed to get store name: {e}")
             return None
 
-    # ------------------------------
-    # ✅ NEW: CLICK STORE TABS
-    # ------------------------------
+   
     def click_store_tabs(self):
         try:
             self.page.wait_for_selector(self.STORE_TABS, timeout=10000)
