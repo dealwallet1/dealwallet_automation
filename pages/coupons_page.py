@@ -184,4 +184,4 @@ class CouponsPage(BasePage):
             last_height = new_height
 
         print(" Back to top")
-        self.page.evaluate("window.scrollTo(0, 0)")
+        self.page.evaluate("window.scrollTo(0, 0)") 
