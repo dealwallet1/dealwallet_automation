@@ -9,7 +9,6 @@ class DealsPage(BasePage):
 
         self.CARD = "div[class*='rounded-3xl']"
 
-
         self.FILTER_BUTTONS = (
             "button:has-text('Store'), "
             "button:has-text('Category'), "
@@ -20,6 +19,7 @@ class DealsPage(BasePage):
         )
 
         self.BUY_NOW_BTN = "button:has-text('Buy Now')"
+        self.SHOP_NOW_BTN = "button:has-text('Shop Now')"
 
         self.SHARE_ICON = "button:has(svg.lucide-share2):visible"
         self.SHARE_POPUP = "h3:has-text('Share this deal'):visible"
@@ -46,7 +46,6 @@ class DealsPage(BasePage):
 
     def get_all_filters(self):
         try:
-            
             self.page.wait_for_selector(
                 "button:has-text('Store'), button:has-text('Category')",
                 timeout=10000
@@ -76,7 +75,6 @@ class DealsPage(BasePage):
             btn.scroll_into_view_if_needed()
             btn.click()
             return True
-
         except Exception as e:
             print(f"Filter open failed: {e}")
             return False
@@ -102,7 +100,6 @@ class DealsPage(BasePage):
 
     def scroll_page_full(self):
         print("Scrolling page...")
-
         last_height = 0
 
         for _ in range(8):
@@ -138,7 +135,6 @@ class DealsPage(BasePage):
 
                 new_page = new_page_info.value
                 new_page.wait_for_load_state()
-
                 print(f"New tab opened: {new_page.url}")
                 self.page = new_page
                 return True
@@ -157,21 +153,72 @@ class DealsPage(BasePage):
     def verify_redirect_to_deal_page(self):
         try:
             url = self.page.url.lower()
-            print(f"Final URL: {url}")
-
-            return any(x in url for x in ["deal", "amazon", "myntra", "flipkart"])
+            print(f"Deal Page URL: {url}")
+            return "deal" in url or "details" in url
         except:
+            return False
+
+    def click_shop_now_on_deal_page(self):
+        try:
+            self.page.wait_for_selector(self.SHOP_NOW_BTN, timeout=15000)
+
+            btn = self.page.locator(self.SHOP_NOW_BTN).first
+            btn.scroll_into_view_if_needed()
+
+            print("Clicking Shop Now...")
+
+            existing_pages = self.page.context.pages
+            btn.click()
+
+            self.page.wait_for_timeout(3000)
+
+            new_pages = self.page.context.pages
+
+            if len(new_pages) > len(existing_pages):
+                self.page = new_pages[-1]
+                self.page.wait_for_load_state()
+                print(f"New tab detected: {self.page.url}")
+            else:
+                self.page.wait_for_load_state()
+                print(f"Same tab navigation: {self.page.url}")
+
+            return True
+
+        except Exception as e:
+            print(f"Shop Now click failed: {e}")
+            return False
+
+    def verify_redirect_to_store_page(self):
+        try:
+            print("Validating external redirect...")
+
+            self.page.wait_for_load_state("domcontentloaded")
+
+            for _ in range(5):
+                current_url = self.page.url.lower()
+                print(f"Current URL: {current_url}")
+
+                if "dealwallet.com" not in current_url:
+                    print("External store reached ")
+                    return True
+
+                self.page.wait_for_timeout(3000)
+
+            print("Still inside dealwallet domain ")
+            print(f"Final URL: {self.page.url}")
+            return False
+
+        except Exception as e:
+            print(f"Redirect validation error: {e}")
             return False
 
     def click_share_icon(self):
         try:
             btn = self.page.locator(self.SHARE_ICON).first
             btn.wait_for(state="visible", timeout=5000)
-
             btn.click()
             print("Clicked share icon")
             return True
-
         except Exception as e:
             print(f"Share click failed: {e}")
             return False
@@ -180,10 +227,8 @@ class DealsPage(BasePage):
         try:
             popup = self.page.locator(self.SHARE_POPUP).first
             popup.wait_for(state="visible", timeout=5000)
-
             print("Share popup is visible")
             return True
-
         except Exception as e:
             print(f"Share popup not visible: {e}")
             return False
