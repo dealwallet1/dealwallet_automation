@@ -48,4 +48,4 @@ class TestCouponsPage:
             "Failed to click share icon"
 
         assert self.coupons.verify_share_popup_opened(), \
-            "Share popup not visible"
+            "Share popup not visible" 
