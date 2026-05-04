@@ -19,7 +19,6 @@ class TestDealsPage:
         assert count > 0, f"No deals found, count={count}"
 
     def test_filters_and_scroll(self):
-        
         self.deals.page.wait_for_load_state("networkidle")
 
         filters, count = self.deals.get_all_filters()
@@ -31,7 +30,7 @@ class TestDealsPage:
 
             assert self.deals.open_filter_by_index(i)
 
-            if "Sort By" in text:
+            if "Sort" in text:
                 assert self.deals.verify_sort_dropdown_opened()
             else:
                 assert self.deals.verify_dropdown_opened()
@@ -48,28 +47,32 @@ class TestDealsPage:
         self.deals.scroll_to_top()
 
     def test_buy_now_navigation(self):
-        assert self.deals.click_first_buy_now(), \
-            "Buy Now click failed"
+        assert self.deals.click_first_buy_now()
 
         self.deals.page.wait_for_load_state("domcontentloaded")
 
-        assert self.deals.verify_redirect_to_deal_page(), \
-            "Redirection failed"
+        assert self.deals.verify_redirect_to_deal_page()
 
     def test_share_popup(self):
-        # Step 1: Go to deal page
-        assert self.deals.click_first_buy_now(), \
-            "Buy Now click failed"
+        assert self.deals.click_first_buy_now()
 
         self.deals.page.wait_for_load_state("domcontentloaded")
 
-        assert self.deals.verify_redirect_to_deal_page(), \
-            "Redirection failed"
+        assert self.deals.verify_redirect_to_deal_page()
 
-        assert self.deals.click_share_icon(), \
-            "Share icon click failed"
+        assert self.deals.click_share_icon()
 
-        assert self.deals.verify_share_popup_opened(), \
-            "Share popup not visible"
+        assert self.deals.verify_share_popup_opened()
 
-    
+    def test_shop_now_redirection(self):
+        assert self.deals.click_first_buy_now()
+
+        self.deals.page.wait_for_load_state("domcontentloaded")
+
+        assert self.deals.verify_redirect_to_deal_page()
+
+        assert self.deals.click_shop_now_on_deal_page()
+
+        self.deals.page.wait_for_load_state("load")
+
+        assert self.deals.verify_redirect_to_store_page()
