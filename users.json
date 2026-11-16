@@ -1,19 +1,19 @@
 [
   {
-    "email": "pradeep1@gmail.com",
-    "password": "Pradeep@0405",
+    "email": "manojmaruboina1431@gmail.com",
+    "password": "Manoj@123",
     "expected": "success",
     "scenario": "Valid Login"
   },
   {
-    "email": "pradeep1@gmail.com",
-    "password": "Pradeep@0405",
+    "email": "manojmaruboina1431@gmail.com",
+    "password": "manoj@123",
     "expected": "error",
     "scenario": "Invalid Password"
   },
   {
     "email": "wronguser@gmail.com",
-    "password": "Pradeep@0405",
+    "password": "Manoj@123",
     "expected": "error",
     "scenario": "Invalid Email"
   },
@@ -31,7 +31,7 @@
   },
   {
     "email": "usergmail.com",
-    "password": "Pradeep@0405",
+    "password": "Manoj@123",
     "expected": "error",
     "scenario": "Invalid Email Format"
   },
@@ -42,8 +42,8 @@
     "scenario": "Case Sensitivity Check"
   },
   {
-    "email": " pradeep1@gmail.com ",
-    "password": "Pradeep@0405",
+    "email": " manojmaruboina1431@gmail.com ",
+    "password": "Manoj@123",
     "expected": "error",
     "scenario": "Extra Spaces Around Email"
   },
