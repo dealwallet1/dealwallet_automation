@@ -20,3 +20,4 @@ class Config:
     LONG_WAIT = 5000
 
     ENABLE_LOGS = True
+
